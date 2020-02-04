@@ -1,11 +1,11 @@
 {
   "name": "shunting-yard.js",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "The shunting yard algorithm transforms a mathematical expression from infix notation into a reversed polish notation (postfix). This is a really extensible implementation.",
   "main": "src/index.js",
   "scripts": {
     "build": "webpack",
-    "test": "mocha --compilers js:babel-core/register ./test/*.test.js"
+    "test": "mocha --require esm --compilers js:babel-core/register ./test/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,10 @@
     "expressions",
     "transformation"
   ],
-  "author": "Georg Tavonius <g.tavonius@gmail.com>",
+  "authors": [
+    "Georg Tavonius <g.tavonius@gmail.com>",
+    "Allison Hancock <aahancoc@umich.edu>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Calamari/shunting-yard.js/issues"
@@ -32,6 +35,7 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
     "chai": "^4.1.2",
+    "esm": "^3.2.25",
     "mocha": "^3.5.3",
     "webpack": "^3.6.0"
   },
