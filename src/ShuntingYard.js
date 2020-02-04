@@ -14,27 +14,28 @@ import Operator from './Operator'
 import Function from './Function'
 
 export default class ShuntingYard {
-  constructor () {
-    this.operators = {
+  constructor (options) {
+    this.operators = options.operators || {
       '+': new Operator('+', 2, 'left', 2, function(a, b) { return a + b }),
       '-': new Operator('-', 2, 'left', 2, function(a, b) { return a - b }),
       '*': new Operator('*', 3, 'left', 2, function(a, b) { return a * b }),
       '/': new Operator('/', 3, 'left', 2, function(a, b) { return a / b }),
       '^': new Operator('^', 4, 'right', 2, function(a, b) { return Math.pow(a, b) })
-    }
-    this.functions = {}
+    };
+    this.functions = options.functions || {};
+    this.parse_raw = options.parse_raw || false;
   }
 
   addFunction (key, func) {
     if (this.functions[key]) {
-      throw new Error(`Function ${key} does already exist.`)
+      console.warn(`Function ${key} already exists`)
     }
     this.functions[key] = func
   }
 
   addOperator (key, operator) {
     if (this.operators[key]) {
-      throw new Error(`Operator ${key} does already exist.`)
+      console.warn(`Operator ${key} already exists`)
     }
     this.operators[key] = operator
   }
@@ -108,14 +109,13 @@ export default class ShuntingYard {
 
   resolveRpn (arr) {
     let stack = []
-    let operators = []
 
     for (let i=0, l=arr.length; i<l; ++i) {
       const op = this.operators[arr[i]] || this.functions[arr[i]]
       if (op) {
         stack.push(op.method.apply(this, stack.splice(-op.params)))
       } else {
-        stack.push(parseFloat(arr[i]))
+        stack.push(this.parse_raw ? arr[i] : parseFloat(arr[i]))
       }
     }
 
